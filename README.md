@@ -4,7 +4,7 @@
 
 ## About
 discoveryd is a service that allows you to easily host MTA-STS, AutoDiscover and AutoConfig for multiple domains.
-This service is hosted for free at [freediscovery.toast.ws](https://freediscovery.toast.ws), which you can use by contacting me via E-Mail.
+This service is hosted for free at [freediscover.toast.ws](https://freediscover.toast.ws), which you can use by contacting me via E-Mail.
 
 This project was started since most guides on the internet recommend that you set up some dodgy PHP script.
 Not everyone wants to deploy a full web server with PHP, which is why I wanted to make it easier for people who host their own mail server.
