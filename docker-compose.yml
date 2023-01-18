@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      ROCKET_PORT: 8000
+      ROCKET_DATABASES: '{discoveryd={url="mysql://discoveryd:DevPassword@db:3306/discoveryd"}}'
+  db:
+    image: mariadb
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_USER: 'discoveryd'
+      MYSQL_PASSWORD: 'DevPassword'
+      MYSQL_DATABASE: 'discoveryd'
+    ports:
+      - 3306:3306
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d:ro
