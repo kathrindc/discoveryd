@@ -1,0 +1,8 @@
+[Unit]
+Description=Common Mail-related Web-Server
+
+[Service]
+ExecStart=/usr/local/bin/discoveryd
+
+[Install]
+WantedBy=multi-user.target
