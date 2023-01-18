@@ -1,7 +1,7 @@
 use std::{sync::atomic::{AtomicUsize, Ordering}, time::SystemTime};
 
 use regex::Regex;
-use rocket::{http::{ContentType, Status, Method}, request::{FromRequest, Outcome}, Request, outcome::IntoOutcome, fairing::{Fairing, Info, Kind, self}, futures::task::Spawn, Response, Rocket, Build, State, config::Config, figment::{Figment, providers::{Serialized, Env, Toml, Format}, Profile}};
+use rocket::{http::{ContentType, Status}, request::{FromRequest, Outcome}, Request, State, figment::{Figment, providers::{Toml, Format}}};
 use rocket_db_pools::{Database, sqlx::{self, Row}, Connection};
 use lazy_static::lazy_static;
 
