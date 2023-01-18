@@ -1,7 +1,7 @@
 use std::{sync::atomic::{AtomicUsize, Ordering}, time::SystemTime};
 
 use regex::Regex;
-use rocket::{http::{ContentType, Status, Method}, request::{FromRequest, Outcome}, Request, outcome::IntoOutcome, fairing::{Fairing, Info, Kind, self}, futures::task::Spawn, Response, Rocket, Build, State};
+use rocket::{http::{ContentType, Status, Method}, request::{FromRequest, Outcome}, Request, outcome::IntoOutcome, fairing::{Fairing, Info, Kind, self}, futures::task::Spawn, Response, Rocket, Build, State, config::Config, figment::{Figment, providers::{Serialized, Env, Toml, Format}, Profile}};
 use rocket_db_pools::{Database, sqlx::{self, Row}, Connection};
 use lazy_static::lazy_static;
 
@@ -316,8 +316,10 @@ fn rocket() -> _ {
         autoconfig: AtomicUsize::new(0),
         started_at: SystemTime::now()
     };
+    let figment = Figment::from(rocket::Config::figment())
+        .merge(Toml::file("/etc/discoveryd.toml").nested());
 
-    rocket::build()
+    rocket::custom(figment)
         .manage(stat)
         .attach(AppDb::init())
         .mount("/", routes![index, mta_sts, autodiscover, autoconfig])
