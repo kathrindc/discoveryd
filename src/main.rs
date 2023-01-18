@@ -45,7 +45,20 @@ impl <'r> FromRequest<'r> for HostInfo {
             return Outcome::Failure((Status::BadRequest, ()));
         }
 
-        let domain = domain_result.unwrap();
+        let mut domain = domain_result.unwrap();
+
+        if domain.starts_with("mta-sts.") {
+            domain = domain.strip_prefix("mta-sts.").unwrap().to_string();
+        }
+
+        if domain.starts_with("autodiscover.") {
+            domain = domain.strip_prefix("autodiscover.").unwrap().to_string();
+        }
+
+        if domain.starts_with("autoconfig.") {
+            domain = domain.strip_prefix("autoconfig.").unwrap().to_string();
+        }
+
         let connection_result = req
             .guard::<Connection<AppDb>>()
             .await;
