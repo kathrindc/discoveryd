@@ -2,6 +2,8 @@
 Description=Common Mail-related Web-Server
 
 [Service]
+User=discoveryd
+Group=discoveryd
 ExecStart=/usr/local/bin/discoveryd
 
 [Install]
