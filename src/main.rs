@@ -330,6 +330,7 @@ fn rocket() -> _ {
         started_at: SystemTime::now()
     };
     let figment = Figment::from(rocket::Config::figment())
+        .merge(("ident", "discoveryd"))
         .merge(Toml::file("/etc/discoveryd.toml").nested());
 
     rocket::custom(figment)
