@@ -118,6 +118,11 @@ impl <'r> FromRequest<'r> for HostInfo {
     }
 }
 
+#[catch(404)]
+fn not_found(_: &Request) -> &'static str {
+    "resource not found\n"
+}
+
 #[get("/")]
 fn index(stat: &State<ServiceStat>) -> (Status, (ContentType, String)) {
     let content = format!(
@@ -340,5 +345,6 @@ fn rocket() -> _ {
     rocket::custom(figment)
         .manage(stat)
         .attach(AppDb::init())
+        .register("/", catchers![not_found])
         .mount("/", routes![index, mta_sts, autodiscover, autoconfig])
 }
