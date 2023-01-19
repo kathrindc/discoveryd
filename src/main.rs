@@ -145,8 +145,12 @@ fn mta_sts(info: HostInfo, stat: &State<ServiceStat>) -> (Status, (ContentType, 
     (Status::Ok, (ContentType::Text, content))
 }
 
-#[post("/autodiscover/autodiscover.xml", data = "<data>")]
-fn autodiscover(info: HostInfo, data: String, stat: &State<ServiceStat>) -> (Status, (ContentType, String)) {
+#[post("/<path1>/<path2>", data = "<data>")]
+fn autodiscover(path1: &str, path2: &str, info: HostInfo, data: String, stat: &State<ServiceStat>) -> Option<(Status, (ContentType, String))> {
+    if path1.to_lowercase() != "autodiscover".to_string() || path2.to_lowercase() != "autodiscover.xml".to_string() {
+        return None
+    }
+
     lazy_static! {
         static ref RE: Regex = Regex::new(r"<EMailAddress>(.*?)</EMailAddress>").unwrap();
     }
@@ -238,7 +242,7 @@ r#"<?xml version="1.0" encoding="utf-8" ?>
                 ),
             };
 
-            (Status::Ok, (ContentType::XML, result))
+            Some((Status::Ok, (ContentType::XML, result)))
         },
 
         None => {
@@ -256,7 +260,7 @@ r#"<?xml version="1.0" encoding="utf-8" ?>
                 SystemTime::UNIX_EPOCH.elapsed().unwrap().as_micros()
             );
 
-            (Status::Ok, (ContentType::XML, result))
+            Some((Status::Ok, (ContentType::XML, result)))
         }
     }
 }
