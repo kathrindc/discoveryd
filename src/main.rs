@@ -143,7 +143,7 @@ fn mta_sts(info: HostInfo, stat: &State<ServiceStat>) -> (Status, (ContentType, 
         .map(|mx| format!("mx: {mx}\n"))
         .collect::<Vec<String>>()
         .join("");
-    let content = format!("version: STSv1\nmode: {}\n{}max-age: 86400\n", info.sts_mode, mxs);
+    let content = format!("version: STSv1\nmode: {}\n{}max_age: 86400\n", info.sts_mode, mxs);
 
     stat.mtasts.fetch_add(1, Ordering::Relaxed);
 
